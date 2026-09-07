@@ -1,4 +1,4 @@
-# Календарь звонков
+# Запись на звонок
 
 
 [![hexlet-check](https://github.com/Obolduy/php-project-386/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Obolduy/php-project-386/actions)
