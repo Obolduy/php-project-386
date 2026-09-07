@@ -32,8 +32,17 @@ jobs:
       - name: Install JS dependencies
         run: npm ci
 
+      - name: Regenerate contract artifacts
+        run: npm run contract
+
+      - name: Check generated artifacts are up to date
+        run: git diff --exit-code
+
       - name: Build frontend
         run: npm run build
+
+      - name: Typecheck frontend
+        run: npm run typecheck
 
       - name: Lint
         run: composer lint
