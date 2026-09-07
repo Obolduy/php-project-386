@@ -34,6 +34,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         
         \App\Contract\Generated\Model\SlotTakenError::class => \App\Contract\Generated\Normalizer\SlotTakenErrorNormalizer::class,
         
+        \App\Contract\Generated\Model\ValidationError::class => \App\Contract\Generated\Normalizer\ValidationErrorNormalizer::class,
+        
         \Jane\Component\JsonSchemaRuntime\Reference::class => \App\Contract\Generated\Runtime\Normalizer\ReferenceNormalizer::class,
     ], $normalizersCache = [];
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool

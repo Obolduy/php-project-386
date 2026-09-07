@@ -77,6 +77,17 @@ export type SlotTakenError = {
     message: string;
 };
 
+/**
+ * Данные не прошли проверку.
+ */
+export type ValidationError = {
+    code: 'validation_failed';
+    message: string;
+    fields: {
+        [key: string]: Array<string>;
+    };
+};
+
 export type AdminBookingsListData = {
     body?: never;
     path?: never;
@@ -100,6 +111,15 @@ export type AdminMeetingTypesCreateData = {
     url: '/api/admin/meeting-types';
 };
 
+export type AdminMeetingTypesCreateErrors = {
+    /**
+     * Данные не прошли проверку.
+     */
+    422: ValidationError;
+};
+
+export type AdminMeetingTypesCreateError = AdminMeetingTypesCreateErrors[keyof AdminMeetingTypesCreateErrors];
+
 export type AdminMeetingTypesCreateResponses = {
     /**
      * The request has succeeded and a new resource has been created as a result.
@@ -118,9 +138,17 @@ export type BookingsCreateData = {
 
 export type BookingsCreateErrors = {
     /**
-     * An unexpected error response.
+     * Ресурс не найден.
      */
-    default: SlotTakenError | NotFoundError;
+    404: NotFoundError;
+    /**
+     * Слот заняли между показом и отправкой формы.
+     */
+    409: SlotTakenError;
+    /**
+     * Данные не прошли проверку.
+     */
+    422: ValidationError;
 };
 
 export type BookingsCreateError = BookingsCreateErrors[keyof BookingsCreateErrors];
@@ -155,18 +183,18 @@ export type MeetingTypesSlotsData = {
     path: {
         id: number;
     };
-    query: {
-        from: string;
-        to: string;
+    query?: {
+        from?: string;
+        to?: string;
     };
     url: '/api/meeting-types/{id}/slots';
 };
 
 export type MeetingTypesSlotsErrors = {
     /**
-     * An unexpected error response.
+     * Ресурс не найден.
      */
-    default: NotFoundError;
+    404: NotFoundError;
 };
 
 export type MeetingTypesSlotsError = MeetingTypesSlotsErrors[keyof MeetingTypesSlotsErrors];

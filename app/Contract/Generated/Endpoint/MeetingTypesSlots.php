@@ -9,8 +9,8 @@ class MeetingTypesSlots extends \App\Contract\Generated\Runtime\Client\BaseEndpo
      * Свободные слоты Типа встречи в окне записи.
      * @param int $id
      * @param array{
-     *    "from": string,
-     *    "to": string,
+     *    "from"?: string,
+     *    "to"?: string,
      * } $queryParameters
      */
     public function __construct(int $id, array $queryParameters = [])
@@ -39,7 +39,7 @@ class MeetingTypesSlots extends \App\Contract\Generated\Runtime\Client\BaseEndpo
     {
         $optionsResolver = parent::getQueryOptionsResolver();
         $optionsResolver->setDefined(['from', 'to']);
-        $optionsResolver->setRequired(['from', 'to']);
+        $optionsResolver->setRequired([]);
         $optionsResolver->setDefaults([]);
         $optionsResolver->addAllowedTypes('from', ['string']);
         $optionsResolver->addAllowedTypes('to', ['string']);
@@ -52,8 +52,9 @@ class MeetingTypesSlots extends \App\Contract\Generated\Runtime\Client\BaseEndpo
     /**
      * {@inheritdoc}
      *
+     * @throws \App\Contract\Generated\Exception\MeetingTypesSlotsNotFoundException
      *
-     * @return null|\App\Contract\Generated\Model\SlotList|\App\Contract\Generated\Model\NotFoundError
+     * @return null|\App\Contract\Generated\Model\SlotList
      */
     protected function transformResponseBody(\Symfony\Contracts\HttpClient\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -62,8 +63,8 @@ class MeetingTypesSlots extends \App\Contract\Generated\Runtime\Client\BaseEndpo
         if ($contentType !== null && (200 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'App\Contract\Generated\Model\SlotList', 'json');
         }
-        if (stripos(strtolower($contentType), 'application/json') !== false) {
-            return $serializer->deserialize($body, 'App\Contract\Generated\Model\NotFoundError', 'json');
+        if ($contentType !== null && (404 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
+            throw new \App\Contract\Generated\Exception\MeetingTypesSlotsNotFoundException($serializer->deserialize($body, 'App\Contract\Generated\Model\NotFoundError', 'json'), $response);
         }
     }
     public function getAuthenticationScopes(): array

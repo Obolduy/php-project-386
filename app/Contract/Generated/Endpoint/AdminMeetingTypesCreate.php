@@ -35,6 +35,7 @@ class AdminMeetingTypesCreate extends \App\Contract\Generated\Runtime\Client\Bas
     /**
      * {@inheritdoc}
      *
+     * @throws \App\Contract\Generated\Exception\AdminMeetingTypesCreateUnprocessableEntityException
      *
      * @return null|\App\Contract\Generated\Model\MeetingType
      */
@@ -44,6 +45,9 @@ class AdminMeetingTypesCreate extends \App\Contract\Generated\Runtime\Client\Bas
         $body = $response->getContent(false);
         if ($contentType !== null && (201 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'App\Contract\Generated\Model\MeetingType', 'json');
+        }
+        if ($contentType !== null && (422 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
+            throw new \App\Contract\Generated\Exception\AdminMeetingTypesCreateUnprocessableEntityException($serializer->deserialize($body, 'App\Contract\Generated\Model\ValidationError', 'json'), $response);
         }
     }
     public function getAuthenticationScopes(): array

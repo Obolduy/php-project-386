@@ -43,6 +43,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Данные не прошли проверку.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -73,19 +83,32 @@
               }
             }
           },
-          "default": {
-            "description": "An unexpected error response.",
+          "404": {
+            "description": "Ресурс не найден.",
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/SlotTakenError"
-                    },
-                    {
-                      "$ref": "#/components/schemas/NotFoundError"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Слот заняли между показом и отправкой формы.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlotTakenError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Данные не прошли проверку.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
                 }
               }
             }
@@ -142,7 +165,7 @@
           {
             "name": "from",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "format": "date"
@@ -152,7 +175,7 @@
           {
             "name": "to",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "format": "date"
@@ -171,8 +194,8 @@
               }
             }
           },
-          "default": {
-            "description": "An unexpected error response.",
+          "404": {
+            "description": "Ресурс не найден.",
             "content": {
               "application/json": {
                 "schema": {
@@ -370,6 +393,35 @@
           }
         },
         "description": "Слот заняли между показом и отправкой формы."
+      },
+      "ValidationError": {
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "fields"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "validation_failed"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "description": "Данные не прошли проверку."
       }
     }
   }

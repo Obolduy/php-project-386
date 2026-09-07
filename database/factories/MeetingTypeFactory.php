@@ -18,4 +18,12 @@ class MeetingTypeFactory extends Factory
             'duration_minutes' => 30,
         ];
     }
+
+    public function lasting(int $minutes): static
+    {
+        return $this->state(fn (): array => [
+            'title' => "Встреча на {$minutes} минут",
+            'duration_minutes' => $minutes,
+        ]);
+    }
 }

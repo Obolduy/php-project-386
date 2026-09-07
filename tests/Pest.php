@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\TestResponse;
+use Osteel\OpenApi\Testing\ValidatorBuilder;
+use Osteel\OpenApi\Testing\ValidatorInterface;
 use Tests\TestCase;
 
 /*
@@ -15,7 +18,7 @@ use Tests\TestCase;
 */
 
 pest()->extend(TestCase::class)
- // ->use(RefreshDatabase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -44,7 +47,14 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function contractValidator(): ValidatorInterface
 {
-    // ..
+    return ValidatorBuilder::fromJsonFile(
+        base_path('contract/openapi/openapi.json')
+    )->getValidator();
+}
+
+function expectMatchesContract(TestResponse $response, string $path, string $method = 'get'): void
+{
+    expect(contractValidator()->validate($response->baseResponse, $path, $method))->toBeTrue();
 }

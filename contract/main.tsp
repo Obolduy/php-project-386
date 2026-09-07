@@ -53,13 +53,24 @@ model Booking {
 @doc("Слот заняли между показом и отправкой формы.")
 @error
 model SlotTakenError {
+  @statusCode statusCode: 409;
   code: "slot_taken";
   message: string;
+}
+
+@doc("Данные не прошли проверку.")
+@error
+model ValidationError {
+  @statusCode statusCode: 422;
+  code: "validation_failed";
+  message: string;
+  fields: Record<string[]>;
 }
 
 @doc("Ресурс не найден.")
 @error
 model NotFoundError {
+  @statusCode statusCode: 404;
   code: "not_found";
   message: string;
 }
@@ -73,7 +84,7 @@ namespace MeetingTypes {
   @doc("Свободные слоты Типа встречи в окне записи.")
   @route("/{id}/slots")
   @get
-  op slots(@path id: int32, @query from: plainDate, @query to: plainDate):
+  op slots(@path id: int32, @query from?: plainDate, @query to?: plainDate):
     | SlotList
     | NotFoundError;
 }
@@ -87,6 +98,7 @@ namespace Bookings {
         @statusCode statusCode: 201;
         @body booking: Booking;
       }
+    | ValidationError
     | SlotTakenError
     | NotFoundError;
 }
@@ -95,10 +107,12 @@ namespace Bookings {
 namespace AdminMeetingTypes {
   @doc("Создать Тип встречи.")
   @post
-  op create(@body input: MeetingTypeInput): {
-    @statusCode statusCode: 201;
-    @body meetingType: MeetingType;
-  };
+  op create(@body input: MeetingTypeInput):
+    | {
+        @statusCode statusCode: 201;
+        @body meetingType: MeetingType;
+      }
+    | ValidationError;
 }
 
 @route("/api/admin/bookings")

@@ -35,6 +35,9 @@ class BookingsCreate extends \App\Contract\Generated\Runtime\Client\BaseEndpoint
     /**
      * {@inheritdoc}
      *
+     * @throws \App\Contract\Generated\Exception\BookingsCreateNotFoundException
+     * @throws \App\Contract\Generated\Exception\BookingsCreateConflictException
+     * @throws \App\Contract\Generated\Exception\BookingsCreateUnprocessableEntityException
      *
      * @return null|\App\Contract\Generated\Model\Booking
      */
@@ -45,13 +48,14 @@ class BookingsCreate extends \App\Contract\Generated\Runtime\Client\BaseEndpoint
         if ($contentType !== null && (201 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'App\Contract\Generated\Model\Booking', 'json');
         }
-        if (stripos(strtolower($contentType), 'application/json') !== false) {
-            try {
-                $decodedBody = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
-                return $decodedBody;
-            } catch (\JsonException $jsonException) {
-                throw new \Jane\Component\JsonSchemaRuntime\Exception\MalformedJsonException('Malformed JSON response body.', 0, $jsonException);
-            }
+        if ($contentType !== null && (404 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
+            throw new \App\Contract\Generated\Exception\BookingsCreateNotFoundException($serializer->deserialize($body, 'App\Contract\Generated\Model\NotFoundError', 'json'), $response);
+        }
+        if ($contentType !== null && (409 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
+            throw new \App\Contract\Generated\Exception\BookingsCreateConflictException($serializer->deserialize($body, 'App\Contract\Generated\Model\SlotTakenError', 'json'), $response);
+        }
+        if ($contentType !== null && (422 === $status && stripos(strtolower($contentType), 'application/json') !== false)) {
+            throw new \App\Contract\Generated\Exception\BookingsCreateUnprocessableEntityException($serializer->deserialize($body, 'App\Contract\Generated\Model\ValidationError', 'json'), $response);
         }
     }
     public function getAuthenticationScopes(): array

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AdminBookingsListData, AdminBookingsListResponses, AdminMeetingTypesCreateData, AdminMeetingTypesCreateResponses, BookingsCreateData, BookingsCreateErrors, BookingsCreateResponses, MeetingTypesListData, MeetingTypesListResponses, MeetingTypesSlotsData, MeetingTypesSlotsErrors, MeetingTypesSlotsResponses } from './types.gen';
+import type { AdminBookingsListData, AdminBookingsListResponses, AdminMeetingTypesCreateData, AdminMeetingTypesCreateErrors, AdminMeetingTypesCreateResponses, BookingsCreateData, BookingsCreateErrors, BookingsCreateResponses, MeetingTypesListData, MeetingTypesListResponses, MeetingTypesSlotsData, MeetingTypesSlotsErrors, MeetingTypesSlotsResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -26,7 +26,7 @@ export const adminBookingsList = <ThrowOnError extends boolean = false>(options?
 /**
  * Создать Тип встречи.
  */
-export const adminMeetingTypesCreate = <ThrowOnError extends boolean = false>(options: Options<AdminMeetingTypesCreateData, ThrowOnError>) => (options.client ?? client).post<AdminMeetingTypesCreateResponses, unknown, ThrowOnError>({
+export const adminMeetingTypesCreate = <ThrowOnError extends boolean = false>(options: Options<AdminMeetingTypesCreateData, ThrowOnError>) => (options.client ?? client).post<AdminMeetingTypesCreateResponses, AdminMeetingTypesCreateErrors, ThrowOnError>({
     url: '/api/admin/meeting-types',
     ...options,
     headers: {

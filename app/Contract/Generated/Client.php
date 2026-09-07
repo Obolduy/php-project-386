@@ -15,6 +15,7 @@ class Client extends \App\Contract\Generated\Runtime\Client\Client
     /**
      * Создать Тип встречи.
      * @param \App\Contract\Generated\Model\MeetingTypeInput $requestBody
+     * @throws \App\Contract\Generated\Exception\AdminMeetingTypesCreateUnprocessableEntityException
      *
      * @return null|\App\Contract\Generated\Model\MeetingType
      */
@@ -25,6 +26,9 @@ class Client extends \App\Contract\Generated\Runtime\Client\Client
     /**
      * Записаться на свободный слот.
      * @param \App\Contract\Generated\Model\BookingInput $requestBody
+     * @throws \App\Contract\Generated\Exception\BookingsCreateNotFoundException
+     * @throws \App\Contract\Generated\Exception\BookingsCreateConflictException
+     * @throws \App\Contract\Generated\Exception\BookingsCreateUnprocessableEntityException
      *
      * @return null|\App\Contract\Generated\Model\Booking
      */
@@ -44,11 +48,12 @@ class Client extends \App\Contract\Generated\Runtime\Client\Client
      * Свободные слоты Типа встречи в окне записи.
      * @param int $id
      * @param array{
-     *    "from": string,
-     *    "to": string,
+     *    "from"?: string,
+     *    "to"?: string,
      * } $queryParameters
+     * @throws \App\Contract\Generated\Exception\MeetingTypesSlotsNotFoundException
      *
-     * @return null|\App\Contract\Generated\Model\SlotList|\App\Contract\Generated\Model\NotFoundError
+     * @return null|\App\Contract\Generated\Model\SlotList
      */
     public function meetingTypesSlots(int $id, array $queryParameters = [])
     {
