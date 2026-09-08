@@ -3,6 +3,8 @@
 
 [![hexlet-check](https://github.com/Obolduy/php-project-386/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Obolduy/php-project-386/actions)
 
+**Приложение:** https://call-booking-ffcd.onrender.com
+
 Разработайте совместно с ИИ сервис для бронирования календаря
 
 Учебный проект Хекслета: https://ru.hexlet.io/programs/php
@@ -10,7 +12,7 @@
 
 ## Стек
 
-- Разное
+Laravel 13 на PHP 8.4 отдаёт JSON API, фронтенд — SPA на Vue 3 и TypeScript. API описан контрактом в TypeSpec, из которого генерируются OpenAPI, клиентский SDK и маршруты. База — SQLite, тесты — Pest.
 
 ## Установка
 
